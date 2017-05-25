@@ -237,11 +237,16 @@ bool OverrideSwitch::match_input_off_gcode(const Gcode *gcode) const
     return (b && gcode->subcode == this->subcode);
 }
 
+bool OverrideSwitch::match_on_or_off_gcode(const Gcode* gcode) const
+{
+    return match_input_on_gcode(gcode) || match_input_off_gcode(gcode);
+}
+
 void OverrideSwitch::on_gcode_received(void *argument)
 {
     Gcode *gcode = static_cast<Gcode *>(argument);
-    // Add the gcode to the queue ourselves if we need it
-    if (!(match_input_on_gcode(gcode) || match_input_off_gcode(gcode))) {
+
+    if (!match_on_or_off_gcode(gcode)) {
         return;
     }
 

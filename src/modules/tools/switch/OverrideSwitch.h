@@ -42,6 +42,7 @@ class OverrideSwitch : public Module {
         void send_gcode(std::string msg, StreamOutput* stream);
         bool match_input_on_gcode(const Gcode* gcode) const;
         bool match_input_off_gcode(const Gcode* gcode) const;
+        bool match_on_or_off_gcode(const Gcode* gcode) const;
 
         Pin       input_pin;
         float     switch_value;
