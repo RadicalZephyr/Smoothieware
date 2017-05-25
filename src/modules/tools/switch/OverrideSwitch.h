@@ -38,6 +38,7 @@ class OverrideSwitch : public Module {
         enum OUTPUT_TYPE {NONE, SIGMADELTA, DIGITAL, HWPWM};
 
     private:
+        void set_switch_state(bool state);
         void flip();
         void send_gcode(std::string msg, StreamOutput* stream);
         bool match_input_on_gcode(const Gcode* gcode) const;

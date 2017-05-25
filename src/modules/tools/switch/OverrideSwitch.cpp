@@ -340,8 +340,7 @@ void OverrideSwitch::on_set_public_data(void *argument)
     // ok this is targeted at us, so set the value
     if(pdr->third_element_is(state_checksum)) {
         bool t = *static_cast<bool *>(pdr->get_data_ptr());
-        this->switch_state = t;
-        this->switch_changed= true;
+        set_switch_state(t);
         pdr->set_taken();
 
         // if there is no gcode to be sent then we can do this now (in on_idle)
@@ -407,26 +406,29 @@ uint32_t OverrideSwitch::pinpoll_tick(uint32_t dummy)
                 this->flip();
             } else {
                 // else default is momentary
-                this->switch_state = this->input_pin_state;
-                this->switch_changed = true;
+                set_switch_state(this->input_pin_state);
             }
 
         } else {
             // else if button released
             if( this->input_pin_behavior == momentary_checksum ) {
                 // if switch is momentary
-                this->switch_state = this->input_pin_state;
-                this->switch_changed = true;
+                set_switch_state(this->input_pin_state);
             }
         }
     }
     return 0;
 }
 
+void OverrideSwitch::set_switch_state(bool state)
+{
+    this->switch_state = state;
+    this->switch_changed = true;
+}
+
 void OverrideSwitch::flip()
 {
-    this->switch_state = !this->switch_state;
-    this->switch_changed = true;
+        set_switch_state(!this->switch_state);
 }
 
 void OverrideSwitch::send_gcode(std::string msg, StreamOutput *stream)
