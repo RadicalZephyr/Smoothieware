@@ -265,12 +265,14 @@ void OverrideSwitch::on_gcode_received(void *argument)
                     THEKERNEL->conveyor->wait_for_idle();
                     this->sigmadelta_pin->pwm(v);
                     this->switch_state= (v > 0);
+                    this->switch_enabled= (v > 0);
                 }
             } else {
                 // drain queue
                 THEKERNEL->conveyor->wait_for_idle();
                 this->sigmadelta_pin->pwm(this->switch_value);
                 this->switch_state= (this->switch_value > 0);
+                this->switch_enabled= (this->switch_value > 0);
             }
 
         } else if (this->output_type == HWPWM) {
@@ -283,9 +285,11 @@ void OverrideSwitch::on_gcode_received(void *argument)
                 else if(v < 0) v= 0;
                 this->pwm_pin->write(v/100.0F);
                 this->switch_state= (v != 0);
+                this->switch_enabled= (v != 0);
             } else {
                 this->pwm_pin->write(this->switch_value);
                 this->switch_state= (this->switch_value != 0);
+                this->switch_enabled= (this->switch_value != 0);
             }
 
         } else if (this->output_type == DIGITAL) {
@@ -294,12 +298,14 @@ void OverrideSwitch::on_gcode_received(void *argument)
             // logic pin turn on
             this->digital_pin->set(true);
             this->switch_state = true;
+            this->switch_enabled = true;
         }
 
     } else if(match_input_off_gcode(gcode)) {
         // drain queue
         THEKERNEL->conveyor->wait_for_idle();
         this->switch_state = false;
+        this->switch_enabled = false;
         if (this->output_type == SIGMADELTA) {
             // SIGMADELTA output pin
             this->sigmadelta_pin->set(false);
