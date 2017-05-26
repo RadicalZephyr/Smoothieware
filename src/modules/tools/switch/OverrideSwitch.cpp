@@ -28,23 +28,24 @@
 
 #include <algorithm>
 
-#define    startup_state_checksum       CHECKSUM("startup_state")
-#define    startup_value_checksum       CHECKSUM("startup_value")
-#define    input_pin_checksum           CHECKSUM("input_pin")
-#define    input_pin_behavior_checksum  CHECKSUM("input_pin_behavior")
-#define    toggle_checksum              CHECKSUM("toggle")
-#define    momentary_checksum           CHECKSUM("momentary")
-#define    command_subcode_checksum     CHECKSUM("subcode")
-#define    input_on_command_checksum    CHECKSUM("input_on_command")
-#define    input_off_command_checksum   CHECKSUM("input_off_command")
-#define    output_pin_checksum          CHECKSUM("output_pin")
-#define    output_type_checksum         CHECKSUM("output_type")
-#define    max_pwm_checksum             CHECKSUM("max_pwm")
-#define    output_on_command_checksum   CHECKSUM("output_on_command")
-#define    output_off_command_checksum  CHECKSUM("output_off_command")
-#define    pwm_period_ms_checksum       CHECKSUM("pwm_period_ms")
-#define    failsafe_checksum            CHECKSUM("failsafe_set_to")
-#define    ignore_onhalt_checksum       CHECKSUM("ignore_on_halt")
+#define    startup_state_checksum         CHECKSUM("startup_state")
+#define    startup_enabled_state_checksum CHECKSUM("startup_enabled_state")
+#define    startup_value_checksum         CHECKSUM("startup_value")
+#define    input_pin_checksum             CHECKSUM("input_pin")
+#define    input_pin_behavior_checksum    CHECKSUM("input_pin_behavior")
+#define    toggle_checksum                CHECKSUM("toggle")
+#define    momentary_checksum             CHECKSUM("momentary")
+#define    command_subcode_checksum       CHECKSUM("subcode")
+#define    input_on_command_checksum      CHECKSUM("input_on_command")
+#define    input_off_command_checksum     CHECKSUM("input_off_command")
+#define    output_pin_checksum            CHECKSUM("output_pin")
+#define    output_type_checksum           CHECKSUM("output_type")
+#define    max_pwm_checksum               CHECKSUM("max_pwm")
+#define    output_on_command_checksum     CHECKSUM("output_on_command")
+#define    output_off_command_checksum    CHECKSUM("output_off_command")
+#define    pwm_period_ms_checksum         CHECKSUM("pwm_period_ms")
+#define    failsafe_checksum              CHECKSUM("failsafe_set_to")
+#define    ignore_onhalt_checksum         CHECKSUM("ignore_on_halt")
 
 OverrideSwitch::OverrideSwitch() {}
 
@@ -95,6 +96,7 @@ void OverrideSwitch::on_config_reload(void *argument)
     this->output_on_command = THEKERNEL->config->value(override_switch_checksum, this->name_checksum, output_on_command_checksum )->by_default("")->as_string();
     this->output_off_command = THEKERNEL->config->value(override_switch_checksum, this->name_checksum, output_off_command_checksum )->by_default("")->as_string();
     this->switch_state = THEKERNEL->config->value(override_switch_checksum, this->name_checksum, startup_state_checksum )->by_default(false)->as_bool();
+    this->switch_enabled = THEKERNEL->config->value(override_switch_checksum, this->name_checksum, startup_enabled_state_checksum )->by_default(false)->as_bool();
     string type = THEKERNEL->config->value(override_switch_checksum, this->name_checksum, output_type_checksum )->by_default("pwm")->as_string();
     this->failsafe= THEKERNEL->config->value(override_switch_checksum, this->name_checksum, failsafe_checksum )->by_default(0)->as_number();
     this->ignore_on_halt= THEKERNEL->config->value(override_switch_checksum, this->name_checksum, ignore_onhalt_checksum )->by_default(false)->as_bool();
