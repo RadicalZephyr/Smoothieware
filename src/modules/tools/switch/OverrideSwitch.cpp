@@ -422,8 +422,10 @@ uint32_t OverrideSwitch::pinpoll_tick(uint32_t dummy)
 
 void OverrideSwitch::set_switch_state(bool state)
 {
-    this->switch_state = state;
-    this->switch_changed = true;
+    if (this->switch_enabled) {
+        this->switch_state = state;
+        this->switch_changed = true;
+    }
 }
 
 void OverrideSwitch::flip()
