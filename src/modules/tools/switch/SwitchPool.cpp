@@ -23,16 +23,24 @@ using namespace std;
 
 void SwitchPool::load_tools()
 {
-    vector<uint16_t> modules;
-    THEKERNEL->config->get_module_list( &modules, switch_checksum );
+    vector<uint16_t> switch_modules;
+    THEKERNEL->config->get_module_list( &switch_modules, switch_checksum );
 
-    for( unsigned int i = 0; i < modules.size(); i++ ) {
+    for( unsigned int i = 0; i < switch_modules.size(); i++ ) {
         // If module is enabled
-        if( THEKERNEL->config->value(switch_checksum, modules[i], enable_checksum )->as_bool() == true ) {
-            Switch *controller = new Switch(modules[i]);
+        if( THEKERNEL->config->value(switch_checksum, switch_modules[i], enable_checksum )->as_bool() == true ) {
+            Switch *controller = new Switch(switch_modules[i]);
             THEKERNEL->add_module(controller);
-        } else if( THEKERNEL->config->value(override_switch_checksum, modules[i], enable_checksum )->as_bool() == true ) {
-            OverrideSwitch *controller = new OverrideSwitch(modules[i]);
+        }
+    }
+
+    vector<uint16_t> override_modules;
+    THEKERNEL->config->get_module_list( &override_modules, override_switch_checksum );
+
+    for( unsigned int i = 0; i < override_modules.size(); i++ ) {
+        // If module is enabled
+        if( THEKERNEL->config->value(override_switch_checksum, override_modules[i], enable_checksum )->as_bool() == true ) {
+            OverrideSwitch *controller = new OverrideSwitch(override_modules[i]);
             THEKERNEL->add_module(controller);
         }
     }
