@@ -195,6 +195,8 @@ void OverrideSwitch::on_config_reload(void *argument)
             input_on_command_letter = 'M';
             input_on_command_code = gc.m;
         }
+    } else {
+        THEKERNEL->streams->printf("No 'input %s' gcode was set. The enabled state of this module will always be the value of startup_enabled_state", "enable");
     }
     if(!input_off_command.empty()) {
         Gcode gc(input_off_command, NULL);
@@ -205,6 +207,8 @@ void OverrideSwitch::on_config_reload(void *argument)
             input_off_command_letter = 'M';
             input_off_command_code = gc.m;
         }
+    } else {
+        THEKERNEL->streams->printf("No 'input %s' gcode was set. The enabled state of this module will always be the value of startup_enabled_state", "disable");
     }
 
     if(input_pin.connected()) {
