@@ -12,11 +12,13 @@ using namespace std;
 #include <vector>
 #include "SwitchPool.h"
 #include "Switch.h"
+#include "OverrideSwitch.h"
 #include "Config.h"
 #include "checksumm.h"
 #include "ConfigValue.h"
 
 #define switch_checksum CHECKSUM("switch")
+#define override_switch_checksum CHECKSUM("override_switch")
 #define enable_checksum CHECKSUM("enable")
 
 void SwitchPool::load_tools()
@@ -29,12 +31,10 @@ void SwitchPool::load_tools()
         if( THEKERNEL->config->value(switch_checksum, modules[i], enable_checksum )->as_bool() == true ) {
             Switch *controller = new Switch(modules[i]);
             THEKERNEL->add_module(controller);
+        } else if( THEKERNEL->config->value(override_switch_checksum, modules[i], enable_checksum )->as_bool() == true ) {
+            OverrideSwitch *controller = new OverrideSwitch(modules[i]);
+            THEKERNEL->add_module(controller);
         }
     }
 
 }
-
-
-
-
-

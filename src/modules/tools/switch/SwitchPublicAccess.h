@@ -3,6 +3,7 @@
 
 // addresses used for public data access
 #define switch_checksum              CHECKSUM("switch")
+#define override_switch_checksum     CHECKSUM("override_switch")
 #define fan_checksum                 CHECKSUM("fan")
 #define state_checksum               CHECKSUM("state")
 #define value_checksum               CHECKSUM("value")
